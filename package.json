@@ -1,0 +1,9 @@
+{
+  "name": "npm-dependency-manager",
+  "version": "0.5.0",
+  "description": "Manage the versioning of multiple repository dependencies in GIT and NPM",
+  "main": "index.js",
+  "repository": "https://github.com/clubajax/npm-dependency-manager.git",
+  "author": "clubajax <anm9tr@gmail.com>",
+  "license": "MIT"
+}
