@@ -1,5 +1,10 @@
 const path = require('path');
 
+// ignores/status
+// never use
+// never commit (but make package changes)
+// never publish (but commit and push)
+
 module.exports = {
 	root: '/sites',
 	repos: {
@@ -16,19 +21,3 @@ module.exports = {
 		}
 	}
 };
-
-// module.exports = {
-// 	root: '/sites/github',
-// 	repos: {
-// 		'undo-stack': {
-// 			'foo': { 'foo-child': {} },
-// 			'bar': {
-// 				'bar-child': {
-// 					'bar-grand-child': {}
-// 				}
-// 			},
-// 			'proxify': { 'foo-child': {} },
-// 		}
-// 	}
-// };
-//
