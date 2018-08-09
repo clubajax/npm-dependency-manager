@@ -5,19 +5,9 @@ const path = require('path');
 // never commit (but make package changes)
 // never publish (but commit and push)
 
+const perm = 'samplify-design,surveytool-ui,babel-test,common-css,pptxgenjs,ADimension,c3,advanced-react,redux-demo,@researchnow/reno';
+const temp = 'smartar,ui-shared,rancor,aer-ui';
 module.exports = {
 	root: '/sites',
-	repos: {
-		'test': {
-			'./github/undo-stack': {
-				'./github/foo': { './github/foo-child': {} },
-				'./github/bar': {
-					'./github/bar-child': {
-						'./github/bar-grand-child': {}
-					}
-				},
-				'./github/proxify': { './github/foo-child': {} },
-			}
-		}
-	}
+	ignore: `${perm},${temp}`
 };
