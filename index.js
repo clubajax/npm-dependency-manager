@@ -7,11 +7,11 @@ const git = require('./lib/git');
 // commit, tag, and publish all parents
 
 // nav.getRepos();
-nav.repo();
+// nav.repo();
 // nav.pkg();
 
 // git.commit('test commit').then(git.push);
 
-git.status().then((status) => {
-	console.log('git.status::', status);
-});
+//git.status().then((status) => { console.log('git.status::', status); });
+
+nav.updateVersion('patch');
