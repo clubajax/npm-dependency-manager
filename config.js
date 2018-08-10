@@ -8,6 +8,6 @@ const path = require('path');
 const perm = 'ben-glowacki,samplify-design,surveytool-ui,babel-test,common-css,pptxgenjs,ADimension,c3,advanced-react,redux-demo,@researchnow/reno';
 const temp = 'smartar,ui-shared,rancor,aer-ui';
 module.exports = {
-	root: '/sites/github/test-pkg-mgr',
+	root: '/sites/github/npm-package-manager/test-repos',
 	ignore: `${perm},${temp}`
 };
