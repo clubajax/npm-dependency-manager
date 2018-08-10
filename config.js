@@ -5,7 +5,7 @@ const path = require('path');
 // never commit (but make package changes)
 // never publish (but commit and push)
 
-const perm = 'samplify-design,surveytool-ui,babel-test,common-css,pptxgenjs,ADimension,c3,advanced-react,redux-demo,@researchnow/reno';
+const perm = 'ben-glowacki,samplify-design,surveytool-ui,babel-test,common-css,pptxgenjs,ADimension,c3,advanced-react,redux-demo,@researchnow/reno';
 const temp = 'smartar,ui-shared,rancor,aer-ui';
 module.exports = {
 	root: '/sites',

@@ -6,11 +6,12 @@ const git = require('./lib/git');
 // recursively update parent's parents
 // commit, tag, and publish all parents
 
-nav.getRepos();
-// nav.pkg();
-// nav.parent();
-// nav.pkg();
-// nav.parent();
+// nav.getRepos();
+nav.repo();
 // nav.pkg();
 
 // git.commit('test commit').then(git.push);
+
+git.status().then((status) => {
+	console.log('git.status::', status);
+});
