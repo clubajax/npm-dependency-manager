@@ -2,25 +2,8 @@ const nav = require('./lib/nav');
 const git = require('./lib/git');
 const util = require('./lib/util');
 const config = require('./lib/config');
-const args = require('minimist')(process.argv.slice(2));
 const DEFAULT_PKG_MESSAGE = 'update version';
 const DEFAULT_PRN_MESSAGE = 'update dependencies';
-
-
-
-// console.log('ARGS', args);
-// update and publish repo, return version
-// update repo's parents
-// recursively update parent's parents
-// commit, tag, and publish all parents
-
-// nav.getRepos();
-// nav.setRepo();
-// nav.getPkg();
-
-// git.commit('test commit').then(git.push);
-
-//git.status().then((status) => { console.log('git.status::', status); });
 
 const reposToSave = [];
 
@@ -30,17 +13,16 @@ function save () {
 	});
 }
 
-function saveLater (repoPath) {
+function saveLater (repoPath, options) {
 	// collect all paths, including base repo, for saving later
-	if (reposToSave.indexOf(repoPath) === -1) {
-		reposToSave.push(repoPath);
+	if (!reposToSave.find(r => Object.keys(r)[0] === repoPath)) {
+		reposToSave.push({
+			[repoPath]: options
+		});
 	}
 }
 
 function updateParents (repo) {
-	const msg = args.msg || args.message;
-	const updateType = 'patch';
-	const version = repo.pkg.version;
 	console.log('repo', repo.name);
 	if (!repo.parents) {
 		return;
@@ -52,13 +34,18 @@ function updateParents (repo) {
 		const deps = parentRepo.pkg.dependencies[repo.name] ? parentRepo.pkg.dependencies : parentRepo.pkg.devDependencies;
 		deps[repo.name] = repo.pkg.version;
 
-		// continue
-		updateRepo(parentRepo.name);
+		updateRepo({
+			name: parentRepo.name,
+			updateType: 'patch',
+			message: DEFAULT_PRN_MESSAGE
+		});
 	});
 }
 
-function updateRepo (name, updateType = 'patch') {
-	const msg = args.msg || args.message;
+function updateRepo (options) {
+
+	const { name, updateType } = options;
+
 	const repo = nav.getRepo(name);
 
 
@@ -68,11 +55,11 @@ function updateRepo (name, updateType = 'patch') {
 		console.log('    no update needed', repo.name);
 	}
 
-	updateParents(repo);
+	updateParents(repo, updateType);
 
 	// don't save until later
 	// everything can be sync until using git
-	saveLater(repo.path);
+	saveLater(repo.path, options);
 
 }
 
@@ -81,16 +68,11 @@ function testRepos () {
 	util.log(repos, true);
 }
 
-// testRepos();
-
-const repoName = args.r || args.repo;
-const updateType = args.M ? 'major' : args.m ? 'minor' : 'patch';
-// updateRepo(repoName, updateType);
-// console.log('to save:', reposToSave);
-
-config.init(() => {
-	console.log('done!');
-	process.exit(0);
-});
+module.exports = (options) => {
+	config.init(() => {
+		options.message = options.message || DEFAULT_PKG_MESSAGE;
+		updateRepo(options);
+	});
+};
 
 
