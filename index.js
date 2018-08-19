@@ -1,11 +1,14 @@
 const nav = require('./lib/nav');
 const git = require('./lib/git');
 const util = require('./lib/util');
+const config = require('./lib/config');
 const args = require('minimist')(process.argv.slice(2));
 const DEFAULT_PKG_MESSAGE = 'update version';
 const DEFAULT_PRN_MESSAGE = 'update dependencies';
 
-console.log('ARGS', args);
+
+
+// console.log('ARGS', args);
 // update and publish repo, return version
 // update repo's parents
 // recursively update parent's parents
@@ -82,5 +85,12 @@ function testRepos () {
 
 const repoName = args.r || args.repo;
 const updateType = args.M ? 'major' : args.m ? 'minor' : 'patch';
-updateRepo(repoName, updateType);
-console.log('to save:', reposToSave);
+// updateRepo(repoName, updateType);
+// console.log('to save:', reposToSave);
+
+config.init(() => {
+	console.log('done!');
+	process.exit(0);
+});
+
+
