@@ -5,21 +5,37 @@ const config = require('./lib/config');
 const DEFAULT_PKG_MESSAGE = 'update version';
 const DEFAULT_PRN_MESSAGE = 'update dependencies';
 
-const reposToSave = [];
+const reposToSave = {};
 
-function save () {
-	git.save(msg || DEFAULT_PKG_MESSAGE, version).then(() => {
+function save (path, options) {
+	console.log('save', path);
+	process.chdir(path);
+	return git.save();
+}
 
-	});
+async function saveRepos (callback) {
+
+	await Promise.all(Object.keys(reposToSave).map(async (path) => {
+		const options = reposToSave[path];
+		return save(path, options);
+	}));
+
+	console.log(reposToSave);
+	callback();
 }
 
 function saveLater (repoPath, options) {
 	// collect all paths, including base repo, for saving later
-	if (!reposToSave.find(r => Object.keys(r)[0] === repoPath)) {
-		reposToSave.push({
+	if (!Object.keys(reposToSave).find(path => path === repoPath)) {
+		reposToSave[repoPath] = {
 			[repoPath]: options
-		});
+		};
 	}
+}
+
+function isToBeSaved (path) {
+	console.log('isToBeSaved', reposToSave);
+	return !!Object.keys(reposToSave).find(repoPath => repoPath === path);
 }
 
 function updateParents (repo) {
@@ -49,7 +65,7 @@ function updateRepo (options) {
 	const repo = nav.getRepo(name);
 
 
-	if (reposToSave.indexOf(repo.path) === -1) {
+	if (!isToBeSaved(repo.path)) {
 		nav.updateVersion(repo, updateType);
 	} else {
 		console.log('    no update needed', repo.name);
@@ -72,6 +88,9 @@ module.exports = (options) => {
 	config.init(() => {
 		options.message = options.message || DEFAULT_PKG_MESSAGE;
 		updateRepo(options);
+		saveRepos(() => {
+			process.exit(0);
+		});
 	});
 };
 
