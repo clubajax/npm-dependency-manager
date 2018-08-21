@@ -15,14 +15,31 @@ if (args._.includes('config')) {
 	const config = require('./lib/config');
 	config.set({
 		command,
-		files: args.f || args.files,
-		path: args.p || args.path
+		files: args.f,
+		path: args.p
 	});
 	process.exit(0);
 }
 
 const repo = args.r || args.repo;
-const updateType = args.v === 'M' ? 'major' : args.v === 'm' ? 'minor' : !args.v ? 'patch' : args.v;
+let updateType;
+switch (args.v) {
+	case 'M':
+	case 'major':
+		updateType = 'major';
+		break;
+	case 'm':
+	case 'minor':
+		updateType = 'minor';
+		break;
+	case '':
+	case 'p':
+	case 'patch':
+		updateType = 'patch';
+		break;
+	default:
+		updateType = args.v;
+}
 const message = args.msg || args.message;
 
 console.log(' -------------------- ', updateType);
