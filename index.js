@@ -8,45 +8,56 @@ const DEFAULT_PRN_MESSAGE = 'update dependencies';
 const reposToSave = {};
 
 function save (path, options) {
-	console.log('save', path);
 	process.chdir(path);
-	return git.save();
+	console.log('save', path);
+	return git.save(options);
 }
 
 async function saveRepos (callback) {
 
-	await Promise.all(Object.keys(reposToSave).map(async (path) => {
+	function sendSave () {
+		const path = Object.keys(reposToSave)[0];
+		if (!path) {
+			callback();
+		}
 		const options = reposToSave[path];
-		return save(path, options);
-	}));
+		console.log('options', options);
+		delete reposToSave[path];
+		save(path, options).then(() => {
+			console.log('done! save next...');
+		});
+	}
+	sendSave();
 
-	console.log(reposToSave);
-	callback();
+	// await Promise.all(Object.keys(reposToSave).map(async (path) => {
+	// 	const options = reposToSave[path];
+	// 	return save(path, options);
+	// }));
+
+	//console.log(reposToSave);
+	// callback();
 }
 
 function saveLater (repoPath, options) {
 	// collect all paths, including base repo, for saving later
 	if (!Object.keys(reposToSave).find(path => path === repoPath)) {
-		reposToSave[repoPath] = {
-			[repoPath]: options
-		};
+		reposToSave[repoPath] = options;
 	}
 }
 
 function isToBeSaved (path) {
-	console.log('isToBeSaved', reposToSave);
 	return !!Object.keys(reposToSave).find(repoPath => repoPath === path);
 }
 
 function updateParents (repo) {
-	console.log('repo', repo.name);
+	// console.log('repo', repo.name);
 	if (!repo.parents) {
 		return;
 	}
 	repo.parents.forEach((parentPath) => {
 		// update dependency
 		const parentRepo = nav.getRepo(parentPath);
-		console.log('    parent', parentRepo.name);
+		// console.log('    parent', parentRepo.name);
 		const deps = parentRepo.pkg.dependencies[repo.name] ? parentRepo.pkg.dependencies : parentRepo.pkg.devDependencies;
 		deps[repo.name] = repo.pkg.version;
 
@@ -65,11 +76,11 @@ function updateRepo (options) {
 	const repo = nav.getRepo(name);
 
 
-	if (!isToBeSaved(repo.path)) {
-		nav.updateVersion(repo, updateType);
-	} else {
-		console.log('    no update needed', repo.name);
-	}
+	// if (!isToBeSaved(repo.path)) {
+	options.version = nav.updateVersion(repo, updateType);
+	// } else {
+	// 	console.log('    no update needed', repo.name);
+	// }
 
 	updateParents(repo, updateType);
 
