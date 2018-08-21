@@ -22,7 +22,7 @@ if (args._.includes('config')) {
 }
 
 const repo = args.r || args.repo;
-const updateType = args.M ? 'major' : args.m ? 'minor' : 'patch';
+const updateType = args.v === 'M' ? 'major' : args.v === 'm' ? 'minor' : !args.v ? 'patch' : args.v;
 const message = args.msg || args.message;
 
 const deps = require('./index');
