@@ -29,6 +29,7 @@ async function saveRepos (callback) {
 			sendSave();
 		});
 	}
+
 	sendSave();
 }
 
@@ -70,11 +71,12 @@ function updateRepo (options) {
 	const repo = nav.getRepo(name);
 
 
-	// if (!isToBeSaved(repo.path)) {
-	options.version = nav.updateVersion(repo, updateType);
-	// } else {
-	// 	console.log('    no update needed', repo.name);
-	// }
+	if (!isToBeSaved(repo.path)) {
+		options.version = nav.updateVersion(repo, updateType);
+	} else {
+		// console.log('    no update needed', repo.name);
+		options.version = repo.pkg.version;
+	}
 
 	updateParents(repo, updateType);
 
