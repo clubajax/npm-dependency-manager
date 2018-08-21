@@ -1,10 +1,10 @@
 {
   "name": "grandpa",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "Testing",
   "devDependencies": {},
   "dependencies": {
-    "father": "1.0.20",
+    "father": "1.0.21",
     "mother": "1.0.5"
   }
 }
