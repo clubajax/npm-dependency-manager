@@ -1,10 +1,10 @@
 {
   "name": "father",
-  "version": "1.0.22",
+  "version": "1.0.0",
   "description": "Testing",
   "devDependencies": {
-    "grandson": "1.0.17",
-    "granddaughter": "1.0.5"
+    "grandson": "1.0.0",
+    "granddaughter": "1.0.0"
   },
   "dependencies": {}
 }

@@ -1,9 +1,9 @@
 {
   "name": "granddaughter",
-  "version": "1.0.15",
+  "version": "1.0.0",
   "description": "Testing",
   "devDependencies": {
-    "grandson": "1.0.17"
+    "grandson": "1.0.0"
   },
   "dependencies": {}
 }
