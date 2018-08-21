@@ -18,6 +18,7 @@ async function saveRepos (callback) {
 	function sendSave () {
 		const path = Object.keys(reposToSave)[0];
 		if (!path) {
+			console.log('done with all repos');
 			callback();
 		}
 		const options = reposToSave[path];
@@ -25,17 +26,10 @@ async function saveRepos (callback) {
 		delete reposToSave[path];
 		save(path, options).then(() => {
 			console.log('done! save next...');
+			sendSave();
 		});
 	}
 	sendSave();
-
-	// await Promise.all(Object.keys(reposToSave).map(async (path) => {
-	// 	const options = reposToSave[path];
-	// 	return save(path, options);
-	// }));
-
-	//console.log(reposToSave);
-	// callback();
 }
 
 function saveLater (repoPath, options) {
