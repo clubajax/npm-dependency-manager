@@ -25,6 +25,7 @@ const repo = args.r || args.repo;
 const updateType = args.v === 'M' ? 'major' : args.v === 'm' ? 'minor' : !args.v ? 'patch' : args.v;
 const message = args.msg || args.message;
 
+console.log(' -------------------- ', updateType);
 const deps = require('./index');
 deps({
 	name: repo,
