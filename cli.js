@@ -38,7 +38,7 @@ switch (args.v) {
 		updateType = 'patch';
 		break;
 	default:
-		updateType = args.v;
+		updateType = args.v || 'patch';
 }
 const message = args.msg || args.message;
 

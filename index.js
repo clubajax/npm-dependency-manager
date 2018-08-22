@@ -9,7 +9,7 @@ const reposToSave = {};
 
 function save (path, options) {
 	process.chdir(path);
-	console.log('save', path);
+	console.log('saving repo', path);
 	return git.save(options);
 }
 
@@ -20,12 +20,12 @@ async function saveRepos (callback) {
 		if (!path) {
 			console.log('done with all repos');
 			callback();
+			return;
 		}
 		const options = reposToSave[path];
 		console.log('options', options);
 		delete reposToSave[path];
 		save(path, options).then(() => {
-			console.log('done! save next...');
 			sendSave();
 		});
 	}
