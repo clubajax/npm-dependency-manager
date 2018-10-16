@@ -2,9 +2,9 @@
 
 const args = require('minimist')(process.argv.slice(2));
 
-// console.log('args', args);
+console.log('args', args);
 
-if (args._.includes('man') || args._.includes('help')) {
+if (args.man || args.help) {
 	require('./lib/help');
 	process.exit(0);
 }

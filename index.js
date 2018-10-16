@@ -70,6 +70,10 @@ function updateRepo (options) {
 
 	const repo = nav.getRepo(name);
 
+	if (!repo) {
+		throw new Error(`repo "${name}" not found. Check the spelling of the folder name.`)
+	}
+
 
 	if (!isToBeSaved(repo.path)) {
 		options.version = nav.updateVersion(repo, updateType);
